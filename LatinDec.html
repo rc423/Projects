@@ -1,0 +1,791 @@
+<!doctype html>
+<html>
+<head>
+    <title>Latin Verb Formatter</title>
+    <script>
+    var decl;
+    decl = 0;
+        
+    var verb;
+    verb = 0;
+    
+    var tense;
+    tense = 0;
+        
+    var person;
+    person = 0;
+        
+    var number;
+    number = 0;
+        
+    var verb_count;
+    verb_count = 0;
+        
+    var stem_verb;
+    stem_verb = 0;
+    
+    var new_verb;
+    new_verb = 0;
+    
+    </script>
+    </head>
+<body>
+    <p>Hi. Welcome to Latin Verb Formatter. This is a tool meant to help people who can't decline Latin verbs very consistently.<br><br>This is pretty easy to make work. All you have to do is enter all the information I need, then hit "Submit". Have fun.<br><br><b>Note: </b>This doesn't support irregular verbs yet.</p>
+    <div id="conjCheck">
+    <p>Please check the conjugation number the verb is in.</p>
+    <form>
+    <label for="dec1?">Conjugation 1</label>
+    <input id='d1?' type="checkbox"> <br>
+    <label for="dec2?">Conjugation 2</label>
+    <input id='d2?' type="checkbox"> <br>
+    <label for="dec3?">Conjugation 3</label>
+    <input id='d3?' type="checkbox"> <br>
+    <label for="dec3io?">Conjugation 3-io</label>
+    <input id='d3io?' type="checkbox"> <br>
+    <label for="dec4?">Conjugation 4</label>
+    <input id='d4?' type="checkbox"> <br> <br>  
+    </form>
+    </div>
+    
+    <div id="verb?">
+    <form>
+    <br><label for="verb?">Please put the singular present tense verb below (Ex: Amo, Maneo, Dormio)</label><br><br>
+    <input id="v?" type="text"> <br><br>
+    </form>
+    </div>
+    
+    <div id="tense?">
+    <form>
+    <br><label for="tense?">Please check the tense that you would like the new verb to be in below:</label> <br><br>
+    <label for="present?">Present tense</label>
+    <input id="pres?" type="checkbox"> <br>
+    <label for="perf?">Perfect Tense</label>
+    <input id="perf?" type="checkbox"> <br>
+    <label for="future?">Future Tense</label>
+    <input id="fut?" type="checkbox"> <br>
+    <label for="imperfect?">Imperfect tense</label>
+    <input id="imp?" type="checkbox"> <br>
+    <label for="pluperfect?">Pluperfect tense</label>
+    <input id="plu?" type="checkbox"> <br> <br>
+    </form>
+    </div>
+    
+    <div id="Person">
+    <p>Please click the correct box you would like your new verb to be formatted in:</p>
+    <form>
+    <label for="1st?">1st Person</label>
+    <input id="1p" type="checkbox"><br>
+    <label for="2nd?">2nd Person</label>
+    <input id="2p" type="checkbox"><br>
+    <label for="3rd?">3rd Person</label>
+    <input id="3p" type="checkbox"><br><br>
+    </form>
+    </div>
+
+    <div id="number">
+    <p>Please select the correct amount of people this verb is directed at.</p>
+    <form>
+        <label for="sing">1 Person</label>
+        <input id="singular" type="checkbox"><br>
+        <label for="plur">2 or more people</label>
+        <input id="plural" type="checkbox"><br><br>
+        </form>
+    </div>
+    
+    <input type="submit" value="Submit">
+    
+    <p id="finalverb"></p>
+    
+    <script>
+    //following if statements are for saving information just given
+    //following 5 are for checking conjugation
+    if (document.getElementById('d1?').checked == true ) {
+        decl = 1;
+    }
+    if (document.getElementById('d2?').checked == true ) {
+        decl = 2;
+    }
+    if (document.getElementById('d3?').checked == true ) {
+        decl = 3;
+    }
+    if (document.getElementById('d3io?').checked == true ) {
+        decl = 31;
+    }
+    if (document.getElementById('d4?').checked == true ) {
+        decl = 4;
+    }
+    //following saves verb
+    verb = (document.getElementById('v?'))
+    //following 6 saves tense
+    if (document.getElementbyId('pres?').checked == true) {
+        tense = "present"                            
+    }
+    if (document.getElementbyId('perf?').checked == true) {
+        tense = "perfect"      
+            if (document.getElementbyId('fut?').checked == true) {
+        tense = "futurep"                            
+    }
+    }
+        else {
+            if (document.getElementbyId('fut?').checked == true) {
+            tense = "future"
+        }
+
+    if (document.getElementbyId('imp?').checked == true) {
+        tense = "imperfect"                            
+    }
+    if (document.getElementbyId('plu?').checked == true) {
+        tense = "pluperfect"                            
+    }
+    //next 3 saves person
+    if (document.getElementById('1p').checked == true) {
+        person = 1;
+    }
+    if (document.getElementById('2p').checked == true) {
+        person = 2;
+    }
+    if (document.getElementById('3p').checked == true) {
+        person = 3;
+    }
+    //next saves #
+    if (document.getElementById('singular').checked == true) {
+        number = 1;
+    }
+    if (document.getElementById('plural').checked == true) {
+        person = 2;
+    }
+    //so now we've saved all info given in the form. what do we do next? make the verb.
+    
+    if (decl == 31 || decl == 4) {
+        verb_count = verb.length;
+        stem_verb = verb.slice(0, (verb_count - 2))
+        if (tense == "present"){
+            //3.io declension 
+            if (decl == 31){
+            if (person == 1) {
+                if (number == 1) {
+                    new_verb = stem_verb.concat('io')
+                }
+                else {
+                    
+                    new_verb = stem_verb.concat('imus')
+                }
+            }
+            if (person == 2){
+                if (number == 1) {
+                    new_verb = stem_verb.concat('is')
+                }
+                else {
+                    
+                    new_verb = stem_verb.concat('itis')
+                }
+            }
+            if (person == 3){
+                if (number == 1) {
+                    new_verb = stem_verb.concat('it')
+                }
+                else {
+                    
+                    new_verb = stem_verb.concat('iunt')
+                }
+            }
+        }
+            if (decl == 4){
+                //4th declension 
+            if (person == 1) {
+                if (number == 1) {
+                    new_verb = stem_verb.concat('io')
+                }
+                else {
+                    
+                    new_verb = stem_verb.concat('imus')
+                }
+            }
+            if (person == 2){
+                if (number == 1) {
+                    new_verb = stem_verb.concat('is')
+                }
+                else {
+                    
+                    new_verb = stem_verb.concat('itis')
+                }
+            }
+            if (person == 3){
+                if (number == 1) {
+                    new_verb = stem_verb.concat('it')
+                }
+                else {
+                    
+                    new_verb = stem_verb.concat('iunt')
+                }
+            }
+        }
+            }
+        if (tense == "future"){
+            //3.io declension 
+            if (decl == 31){
+            if (person == 1) {
+                if (number == 1) {
+                    new_verb = stem_verb.concat('iam')
+                }
+                else {
+                    
+                    new_verb = stem_verb.concat('iemus')
+                }
+            }
+            if (person == 2){
+                if (number == 1) {
+                    new_verb = stem_verb.concat('ies')
+                }
+                else {
+                    
+                    new_verb = stem_verb.concat('ietis')
+                }
+            }
+            if (person == 3){
+                if (number == 1) {
+                    new_verb = stem_verb.concat('iet')
+                }
+                else {
+                    
+                    new_verb = stem_verb.concat('ient')
+                }
+            }
+        }
+            if (decl == 4){
+                //4th declension 
+            if (person == 1) {
+                if (number == 1) {
+                    new_verb = stem_verb.concat('iam')
+                }
+                else {
+                    
+                    new_verb = stem_verb.concat('imus')
+                }
+            }
+            if (person == 2){
+                if (number == 1) {
+                    new_verb = stem_verb.concat('is')
+                }
+                else {
+                    
+                    new_verb = stem_verb.concat('itis')
+                }
+            }
+            if (person == 3){
+                if (number == 1) {
+                    new_verb = stem_verb.concat('it')
+                }
+                else {
+                    
+                    new_verb = stem_verb.concat('iunt')
+                }
+            }
+        }
+            }
+        }
+        
+            else {
+                verb_count = verb.length;
+                stem_verb = verb.slice(0, (verb_count - 1))
+                if (decl == 1){
+                    if (tense == 'present'){
+                        if (person == 1){
+                            if (number == 1){
+                                new_verb = stem_verb.concat('o')
+                            }
+                            else {
+                                new_verb = stem_verb.concat('amus')
+                            }
+                        }
+                        if (person == 2){
+                            if (number == 1) {
+                                new_verb = stem_verb.concat('as')
+                            }
+                            else {
+                                new_verb = stem_verb.concat('atis')
+                            }
+                        }
+                        else {
+                            if (number == 1) {
+                                new_verb = stem_verb.concat('at')
+                            }
+                            else {
+                                new_verb = stem_verb.concat('ant')
+                            }
+                        }
+                    }
+                    if (tense == 'perfect'){
+                        if (person == 1){
+                            if (number == 1){
+                                new_verb = stem_verb.concat('avi')
+                            }
+                            else {
+                                new_verb = stem_verb.concat('avimus')
+                            }
+                        }
+                        if (person == 2){
+                            if (number == 1){
+                                new_verb = stem_verb.concat('avisti')
+                            }
+                            else {
+                                new_verb = stem_verb.concat('avistis')
+                            }
+                        }
+                        if (person == 3){
+                            if (number == 1){
+                                new_verb = stem_verb.concat('avit')
+                            }
+                            else {
+                                new_verb = stem_verb.concat('averunt')
+                            }
+                        }
+                    }
+                    if (tense == 'futurep'){
+                        if (person == 1){
+                            if (number == 1){
+                                new_verb = stem_verb.concat('avero')
+                            }
+                            else {
+                                new_verb = stem_verb.concat('averimus')
+                            }
+                        }
+                        if (person == 2){
+                            if (number == 1){
+                                new_verb = stem_verb.concat('averis')
+                            }
+                            else {
+                                new_verb = stem_verb.concat('averitis')
+                            }
+                        }
+                        if (person == 3){
+                            if (number == 1){
+                                new_verb = stem_verb.concat('averit')
+                            }
+                            else {
+                                new_verb = stem_verb.concat('averint')
+                            }
+                        }
+                    }
+                    if (tense == 'future'){
+                        if (person == 1){
+                            if (number == 1){
+                                new_verb = stem_verb.concat('abo')
+                            }
+                            else {
+                                new_verb = stem_verb.concat('abimus')
+                            }
+                        }
+                        if (person == 2){
+                            if (number == 1){
+                                new_verb = stem_verb.concat('abis')
+                            }
+                            else {
+                                new_verb = stem_verb.concat('abitis')
+                            }
+                        }
+                        if (person == 3){
+                            if (number == 1){
+                                new_verb = stem_verb.concat('abit')
+                            }
+                            else {
+                                new_verb = stem_verb.concat('abunt')
+                            }
+                        }
+                    }
+                    if (tense == 'imperfect'){
+                        if (person == 1){
+                            if (number == 1){
+                                new_verb = stem_verb.concat('abam')
+                            }
+                            else {
+                                new_verb = stem_verb.concat('abamus')
+                            }
+                        }
+                        if (person == 2){
+                            if (number == 1){
+                                new_verb = stem_verb.concat('abas')
+                            }
+                            else {
+                                new_verb = stem_verb.concat('abatis')
+                            }
+                        }
+                        if (person == 3){
+                            if (number == 1){
+                                new_verb = stem_verb.concat('abat')
+                            }
+                            else {
+                                new_verb = stem_verb.concat('abant')
+                            }
+                        }
+                    }
+                    if (tense == 'pluperfect'){
+                        if (person == 1){
+                            if (number == 1){
+                                new_verb = stem_verb.concat('averam')
+                            }
+                            else {
+                                new_verb = stem_verb.concat('averamus')
+                            }
+                        }
+                        if (person == 2){
+                            if (number == 1){
+                                new_verb = stem_verb.concat('averas')
+                            }
+                            else {
+                                new_verb = stem_verb.concat('averatis')
+                            }
+                        }
+                        if (person == 3){
+                            if (number == 1){
+                                new_verb = stem_verb.concat('averat')
+                            }
+                            else {
+                                new_verb = stem_verb.concat('averint')
+                            }
+                        }
+                    }
+                }
+                if (decl == 2){
+                    if (tense == 'present'){
+                        if (person == 1){
+                            if (number == 1){
+                                new_verb = stem_verb.concat('o')
+                            }
+                            else {
+                                new_verb = stem_verb.concat('mus')
+                            }
+                        }
+                        if (person == 2){
+                            if (number == 1){
+                                new_verb = stem_verb.concat('s')
+                            }
+                            else {
+                                new_verb = stem_verb.concat('tis')
+                            }
+                        }
+                        if (person == 3){
+                            if (number == 1){
+                                new_verb = stem_verb.concat('t')
+                            }
+                            else {
+                                new_verb = stem_verb.concat('nt')
+                            }
+                        }
+                    }
+                    if (tense == 'perfect'){
+                        if (person == 1){
+                            if (number == 1){
+                                stem_verb = verb.slice(0, (stem_verb - 1))
+                                new_verb = stem_verb.concat('ui')
+                            }
+                            else {
+                                stem_verb = verb.slice(0, (stem_verb - 1))
+                                new_verb = stem_verb.concat('uimus')
+                            }
+                        }
+                        if (person == 2){
+                            if (number == 1){
+                                stem_verb = verb.slice(0, (stem_verb - 1))
+                                new_verb = stem_verb.concat('uisti')
+                            }
+                            else {
+                                stem_verb = verb.slice(0, (stem_verb - 1))
+                                new_verb = stem_verb.concat('uistis')
+                            }
+                        }
+                        if (person == 3){
+                            if (number == 1){
+                                stem_verb = verb.slice(0, (stem_verb - 1))
+                                new_verb = stem_verb.concat('uit')
+                            }
+                            else {
+                                stem_verb = verb.slice(0, (stem_verb - 1))
+                                new_verb = stem_verb.concat('uerunt')
+                            }
+                        }
+                    }
+                    if (tense == 'futurep'){
+                        if (person == 1){
+                            if (number == 1){
+                                stem_verb = verb.slice(0, (stem_verb - 1))
+                                new_verb = stem_verb.concat('uero')
+                            }
+                            else {
+                                stem_verb = verb.slice(0, (stem_verb - 1))
+                                new_verb = stem_verb.concat('uerimus')
+                            }
+                        }
+                        if (person == 2){
+                            if (number == 1){
+                                stem_verb = verb.slice(0, (stem_verb - 1))
+                                new_verb = stem_verb.concat('ueris')
+                            }
+                            else {
+                                stem_verb = verb.slice(0, (stem_verb - 1))
+                                new_verb = stem_verb.concat('ueritis')
+                            }
+                        }
+                        if (person == 3){
+                            if (number == 1){
+                                stem_verb = verb.slice(0, (stem_verb - 1))
+                                new_verb = stem_verb.concat('uerit')
+                            }
+                            else {
+                                stem_verb = verb.slice(0, (stem_verb - 1))
+                                new_verb = stem_verb.concat('uerint')
+                            }
+                        }
+                    }
+                    if (tense == 'future'){
+                        if (person == 1){
+                            if (number == 1){
+                                new_verb = stem_verb.concat('bo')
+                            }
+                            else {
+                                new_verb = stem_verb.concat('bimus')
+                            }
+                        }
+                        if (person == 2){
+                            if (number == 1){
+                                new_verb = stem_verb.concat('bis')
+                            }
+                            else {
+                                new_verb = stem_verb.concat('bitis')
+                            }
+                        }
+                        if (person == 3){
+                            if (number == 1){
+                                new_verb = stem_verb.concat('bit')
+                            }
+                            else {
+                                new_verb = stem_verb.concat('bunt')
+                            }
+                        }
+                    }
+                    if (tense == 'imperfect'){
+                        if (person == 1){
+                            if (number == 1){
+                                new_verb = stem_verb.concat('bam')
+                            }
+                            else {
+                                new_verb = stem_verb.concat('bamus')
+                            }
+                        }
+                        if (person == 2){
+                            if (number == 1){
+                                new_verb = stem_verb.concat('bas')
+                            }
+                            else {
+                                new_verb = stem_verb.concat('batis')
+                            }
+                        }
+                        if (person == 3){
+                            if (number == 1){
+                                new_verb = stem_verb.concat('bat')
+                            }
+                            else {
+                                new_verb = stem_verb.concat('bant')
+                            }
+                        }
+                    }
+                    if (tense == 'pluperfect'){
+                        if (person == 1){
+                            if (number == 1){
+                                stem_verb = verb.slice(0, (stem_verb - 1))
+                                new_verb = stem_verb.concat('ueram')
+                            }
+                            else {
+                                stem_verb = verb.slice(0, (stem_verb - 1))
+                                new_verb = stem_verb.concat('ueramus')
+                            }
+                        }
+                        if (person == 2){
+                            if (number == 1){
+                                stem_verb = verb.slice(0, (stem_verb - 1))
+                                new_verb = stem_verb.concat('ueras')
+                            }
+                            else {
+                                stem_verb = verb.slice(0, (stem_verb - 1))
+                                new_verb = stem_verb.concat('ueratis')
+                            }
+                        }
+                        if (person == 3){
+                            if (number == 1){
+                                stem_verb = verb.slice(0, (stem_verb - 1))
+                                new_verb = stem_verb.concat('uerat')
+                            }
+                            else {
+                                stem_verb = verb.slice(0, (stem_verb - 1))
+                                new_verb = stem_verb.concat('uerant')
+                            }
+                        }
+                    }
+                }
+                if (decl == 3) {
+                    if (tense == 'present'){
+                        if (person == 1){
+                            if (number == 1){
+                                
+                            }
+                            else {
+                                
+                            }
+                        }
+                        if (person == 2){
+                            if (number == 1){
+                                
+                            }
+                            else {
+                                
+                            }
+                        }
+                        if (person == 3){
+                            if (number == 1){
+                                
+                            }
+                            else {
+                                
+                            }
+                        }
+                    }
+                    if (tense == 'perfect'){
+                        if (person == 1){
+                            if (number == 1){
+                                
+                            }
+                            else {
+                                
+                            }
+                        }
+                        if (person == 2){
+                            if (number == 1){
+                                
+                            }
+                            else {
+                                
+                            }
+                        }
+                        if (person == 3){
+                            if (number == 1){
+                                
+                            }
+                            else {
+                                
+                            }
+                        }
+                    }
+                    if (tense == 'futurep'){
+                        if (person == 1){
+                            if (number == 1){
+                                
+                            }
+                            else {
+                                
+                            }
+                        }
+                        if (person == 2){
+                            if (number == 1){
+                                
+                            }
+                            else {
+                                
+                            }
+                        }
+                        if (person == 3){
+                            if (number == 1){
+                                
+                            }
+                            else {
+                                
+                            }
+                        }
+                    }
+                    if (tense == 'future'){
+                        if (person == 1){
+                            if (number == 1){
+                                
+                            }
+                            else {
+                                
+                            }
+                        }
+                        if (person == 2){
+                            if (number == 1){
+                                
+                            }
+                            else {
+                                
+                            }
+                        }
+                        if (person == 3){
+                            if (number == 1){
+                                
+                            }
+                            else {
+                                
+                            }
+                        }
+                    }
+                    if (tense == 'imperfect'){
+                        if (person == 1){
+                            if (number == 1){
+                                
+                            }
+                            else {
+                                
+                            }
+                        }
+                        if (person == 2){
+                            if (number == 1){
+                                
+                            }
+                            else {
+                                
+                            }
+                        }
+                        if (person == 3){
+                            if (number == 1){
+                                
+                            }
+                            else {
+                                
+                            }
+                        }
+                    }
+                    if (tense == 'pluperfect'){
+                        if (person == 1){
+                            if (number == 1){
+                                
+                            }
+                            else {
+                                
+                            }
+                        }
+                        if (person == 2){
+                            if (number == 1){
+                                
+                            }
+                            else {
+                                
+                            }
+                        }
+                        if (person == 3){
+                            if (number == 1){
+                                
+                            }
+                            else {
+                                
+                            }
+                        }
+                    }
+                }
+            }
+            
+document.getElementbyId('answer').innerHTML = new_verb
+    </script>
+    <p id="answer"></p>
+</body>
+    
+<!--Thank you to W3Schools for teaching me the basics of HTML. If anyone else reading this wants to learn how to code, go to https://www.w3schools.com/default.asp-->
+</html>
